@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ListaDetalhadaService } from './lista-detalhada.service';
 
 
 
@@ -6,16 +7,7 @@ export interface PeriodicElement {
   sigla: string;
   tipo: string;
   total: number;
-  
 }
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {tipo: 'Compra', sigla: 'NE', total: 1.0079},
-  {tipo: 'Premio', sigla: 'NE', total: 4.0026}
-  
-  
-];
-
 
 
 @Component({
@@ -26,10 +18,25 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ListaDetalhadaComponent implements OnInit {
 
   displayedColumns: string[] = ['tipo', 'sigla', 'total'];
-  dataSource = ELEMENT_DATA;
-  constructor() { }
+  dataSource = null;
+  siglaDigitada:string;
+
+  constructor(private listaDetalhadaService :ListaDetalhadaService) { }
 
   ngOnInit(): void {
   }
+
+  public buscarDadosConsolidados(){
+    this.listaDetalhadaService.buscarDadosconsolidados(this.siglaDigitada).subscribe( resposta=>{
+        console.log('Sucesso ao buscad dados');
+        console.log(resposta);
+        this.dataSource = resposta as (PeriodicElement[] ) ;
+      }, (error)=>{
+        console.log('Erro buscar dados consolidados');
+      }); 
+
+  }
+
+
 
 }

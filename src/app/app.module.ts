@@ -18,6 +18,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTableModule} from '@angular/material/table';
+import { ListaDetalhadaService } from './lista-detalhada/lista-detalhada.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import {MatTableModule} from '@angular/material/table';
     MatTableModule
 
   ],
-  providers: [UploadService],
+  providers: [UploadService,ListaDetalhadaService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
