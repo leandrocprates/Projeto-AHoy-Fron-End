@@ -9,15 +9,21 @@ import { FormGroup, FormControl, Validators} from '@angular/forms';
 })
 export class UploadComponent implements OnInit {
 
+  enviandoArquivo: boolean = false ; 
+  myForm : FormGroup ;
+
   constructor(private uploadService : UploadService) { }
 
-  myForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required])
-  });
 
   ngOnInit(): void {
+    this.limparForm();
+  }
+
+  limparForm(){
+    this.myForm = new FormGroup({
+      file: new FormControl('',)
+    });
+  
   }
 
 
@@ -26,20 +32,24 @@ export class UploadComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.myForm.patchValue({
-        fileSource: file
+        file: file
       });
     }
   }
 
   public enviarupload(){
 
-    const formData = new FormData();
-    formData.append('file', this.myForm.get('fileSource').value);
+    let formData = new FormData();
+    formData.append('file', this.myForm.get('file').value);
 
+    this.enviandoArquivo = true ; 
     this.uploadService.enviarupload(formData).subscribe( resposta => {
       console.log('Upload Realizado com Sucesso'); 
+      this.enviandoArquivo = false ; 
+      formData = null;
     }, (error)=> {
       console.log('Erro upload de arquivo');
+      this.enviandoArquivo = false ; 
     });
   }
 
