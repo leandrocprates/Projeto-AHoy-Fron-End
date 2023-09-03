@@ -12,6 +12,12 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { HttpClientModule } from '@angular/common/http' ;
 import { UploadService } from './upload/upload.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -24,10 +30,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     RouterModule,
     BrowserAnimationsModule,
+    HttpClientModule,
+    FormsModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    HttpClientModule,
-    FormsModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule, MatDividerModule, MatIconModule,
+    MatTableModule
+
   ],
   providers: [UploadService],
   bootstrap: [AppComponent]
