@@ -2,7 +2,7 @@
     <br>
 
         <form (ngSubmit)="enviarupload()">
-            <input type="file" class="file-upload" (change)="onFileChange($event)">
+            <input type="file" class="file-upload" (change)="onFileChange($event)" multiple>
             <br>
             <br>
             <button class="btn btn-primary" type="submit">Enviar Arquivo</button>
@@ -10,6 +10,6 @@
 
         <br>
         <br>
-        <mat-progress-bar *ngIf="enviandoArquivo" mode="indeterminate"></mat-progress-bar>
+        <mat-progress-bar  *ngIf="enviandoArquivo" mode="indeterminate"></mat-progress-bar>
 
     </div>

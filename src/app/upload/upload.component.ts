@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UploadService } from './upload.service';
-import { FormGroup, FormControl, Validators} from '@angular/forms';
+import { FormGroup, FormControl, Validators,FormArray} from '@angular/forms';
 
 @Component({
   selector: 'app-upload',
@@ -11,6 +11,7 @@ export class UploadComponent implements OnInit {
 
   enviandoArquivo: boolean = false ; 
   myForm : FormGroup ;
+  uploadFiles: string[] = [];
 
   constructor(private uploadService : UploadService) { }
 
@@ -20,30 +21,26 @@ export class UploadComponent implements OnInit {
   }
 
   limparForm(){
-    this.myForm = new FormGroup({
-      file: new FormControl('',)
-    });
-  
+    this.uploadFiles = [];
   }
 
 
   onFileChange(event) {
-  
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.myForm.patchValue({
-        file: file
-      });
+    for (var i = 0; i < event.target.files.length; i++) {
+      this.uploadFiles.push(event.target.files[i]);
     }
   }
 
   public enviarupload(){
 
     let formData = new FormData();
-    formData.append('file', this.myForm.get('file').value);
+    for (var i = 0; i < this.uploadFiles.length; i++) {
+      formData.append('files', this.uploadFiles[i]);
+    }    
 
     this.enviandoArquivo = true ; 
-    this.uploadService.enviarupload(formData).subscribe( resposta => {
+    
+    this.uploadService.enviarmultiplosupload(formData).subscribe( resposta => {
       console.log('Upload Realizado com Sucesso'); 
       this.enviandoArquivo = false ; 
       formData = null;
