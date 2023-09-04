@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ElementRef } from '@angular/core';
 import { UploadService } from './upload.service';
 import { FormGroup, FormControl, Validators,FormArray} from '@angular/forms';
+import { ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
@@ -12,6 +13,8 @@ export class UploadComponent implements OnInit {
   enviandoArquivo: boolean = false ; 
   myForm : FormGroup ;
   uploadFiles: string[] = [];
+  @ViewChild('myInput')
+  myInputVariable: ElementRef;  
 
   constructor(private uploadService : UploadService) { }
 
@@ -22,6 +25,7 @@ export class UploadComponent implements OnInit {
 
   limparForm(){
     this.uploadFiles = [];
+    this.myInputVariable.nativeElement.value = "";
   }
 
 
@@ -44,6 +48,7 @@ export class UploadComponent implements OnInit {
       console.log('Upload Realizado com Sucesso'); 
       this.enviandoArquivo = false ; 
       formData = null;
+      this.limparForm();
     }, (error)=> {
       console.log('Erro upload de arquivo');
       this.enviandoArquivo = false ; 

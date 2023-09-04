@@ -2,7 +2,7 @@
     <br>
 
         <form (ngSubmit)="enviarupload()">
-            <input type="file" class="file-upload" (change)="onFileChange($event)" multiple>
+            <input #myInput  id="enviaarquivo" type="file" class="file-upload" (change)="onFileChange($event)" multiple>
             <br>
             <br>
             <button class="btn btn-primary" type="submit">Enviar Arquivo</button>
