@@ -24,6 +24,7 @@ export class UploadComponent implements OnInit {
   }
 
   limparForm(){
+    this.uploadFilesTransformado=[];
     this.uploadFiles = [];
     this.myInputVariable.nativeElement.value = "";
   }
@@ -57,16 +58,12 @@ export class UploadComponent implements OnInit {
         
         for (var i = 0; i < agente.length; i++) {
             let regiao = agente[i].getElementsByTagName("regiao");
-            console.log(regiao);
             for (var t = 0; t < regiao.length; t++) {
                 let precoMedio = regiao[t].getElementsByTagName("precoMedio")[0];
-                console.log(precoMedio);
                 let newNode= xmlDoc.createElement("precoMedio");
-                //regiao[t].replaceChild(newNode,precoMedio);
 
                 let valores = precoMedio.getElementsByTagName("valor");
                 for (var z = 0; z < valores.length; z++) {
-                  console.log(valores[z]);
                   let newNodeValor= xmlDoc.createElement("valor");
                   let newTextValor = xmlDoc.createTextNode("0");
                   newNodeValor.appendChild(newTextValor);
@@ -77,7 +74,7 @@ export class UploadComponent implements OnInit {
         }
         
         console.log(xmlDoc);
-        this.montarArquivoNovo(xmlDoc,file);  
+        this.montarArquivoNovo(xmlDoc,file.name);  
         this.prepararEEnviarArquivo();
         
       }
@@ -90,8 +87,8 @@ export class UploadComponent implements OnInit {
   public prepararEEnviarArquivo(){
 
     let formData = new FormData();
-    for (var i = 0; i < this.uploadFiles.length; i++) {
-        formData.append('files', this.uploadFiles[i]);
+    for (var i = 0; i < this.uploadFilesTransformado.length; i++) {
+        formData.append('files', this.uploadFilesTransformado[i]);
     }
 
     this.enviandoArquivo = true ; 
@@ -108,14 +105,14 @@ export class UploadComponent implements OnInit {
   }
 
 
-  public montarArquivoNovo(xmlDoc,file){
+  public montarArquivoNovo(xmlDoc,nomefile){
 
     let xmlString = new XMLSerializer().serializeToString(xmlDoc);
  
-    var fileNew = new File([xmlString], file.name , {type: "text/xml"});
-    file = fileNew;
-    this.uploadFiles = [];
-    this.uploadFiles.push(file);
+    let fileNew = new File([xmlString], nomefile , {type: "text/xml"});
+    let fileEnviar:any = fileNew;
+    this.uploadFilesTransformado= [];
+    this.uploadFilesTransformado.push(fileEnviar);
   }
 
 }
