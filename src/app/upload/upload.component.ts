@@ -2,6 +2,7 @@ import { Component, OnInit,ElementRef } from '@angular/core';
 import { UploadService } from './upload.service';
 import { FormGroup, FormControl, Validators,FormArray} from '@angular/forms';
 import { ViewChild } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -37,15 +38,26 @@ export class UploadComponent implements OnInit {
   }
 
   public enviarupload(){
-    this.lerArquivoETransformar(this.uploadFiles);
+    for (var i = 0; i < this.uploadFiles.length; i++) {
+      this.lerArquivoETransformar(this.uploadFiles[i]).subscribe(valor=>{
+        console.log(valor.fileName);
+        console.log(valor.xmlDoc);
+        this.montarArquivoNovo(valor.xmlDoc,valor.fileName);  
+        this.prepararEEnviarArquivo();
+      });
+    }
+    
     
   }
 
-  public lerArquivoETransformar(uploadFiles: string[]){
+  public lerArquivoETransformar(arquivo: any){
 
-    let file ;
-    for (var i = 0; i < this.uploadFiles.length; i++) {
-      file = this.uploadFiles[i] ; 
+
+    return new Observable<any>(obs => {
+
+    let file: any ;
+    
+      file = arquivo ; 
 
       let fileReader: FileReader = new FileReader();
       fileReader.onload = (e) => {
@@ -73,13 +85,13 @@ export class UploadComponent implements OnInit {
             }
         }
         
-        console.log(xmlDoc);
-        this.montarArquivoNovo(xmlDoc,file.name);  
-        this.prepararEEnviarArquivo();
-        
+        obs.next({fileName: file.name, xmlDoc: xmlDoc} );
+
       }
       fileReader.readAsText(file); 
-    }
+    
+
+    });
 
   }
 
